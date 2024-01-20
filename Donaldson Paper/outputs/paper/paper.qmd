@@ -1,0 +1,127 @@
+---
+title: "Polls conducted by City of Toronto"
+# subtitle: "My subtitle if needed"
+author: 
+  - Raghav Kanda
+thanks: "Code and data are available at: (https://open.toronto.ca/dataset/polls-conducted-by-the-city/)."
+date: January 20, 2024
+date-format: long
+abstract: "The dataset obtained from the City of Toronto's OpenDataToronto Library sheds light on poll engagement dynamics within the city. With records starting from April 1, 2015, this study explores various facets of poll participation, including ballot distribution, cast and blank ballots, declarations added, and final voter counts."
+format: pdf
+number-sections: true
+---
+
+
+
+# Introduction
+
+In accordance with the mandate of the City Clerk's Office to oversee polls on behalf of City divisions, this study engages with a comprehensive dataset focused on poll engagement. The dataset, initiated on April 1, 2015, provides a daily account of updates following the conclusion and certification of each poll. The primary objective is to discern the opinions of residents and businesses on various subjects governed by a City by-law (Chp190).
+
+Key facets of the dataset include information such as the street address of the application, the type of application, the count of blank and cast ballots, the distribution of ballots, and the number of ballots marked "in favour" or "opposed." Several other relevant metrics contribute to a holistic understanding of poll engagement dynamics. The temporal dimension is also captured, featuring data on the opening and closing dates of each poll, the moratorium date, and the final voter count. Moreover, the dataset accounts for additional factors influencing poll outcomes, such as declarations added after the poll opening, the number of spoiled ballots, and ballots returned to the sender.
+
+This research endeavor aims to unravel the intricate dynamics of poll engagement and its multifaceted components within the City of Toronto divisions. By systematically analyzing the rich and varied dataset, this study seeks to contribute nuanced insights into the patterns and trends associated with poll engagement. The subsequent sections—Data, Results, Discussion, and Conclusion—serve as a structured framework for the meticulous examination and interpretation of findings derived from the dataset.
+
+The Data section elucidates the nature of the dataset sourced from the City of Toronto's OpenDataToronto Library (Gelfand 2022), detailing the steps taken for data cleaning and analysis. Results unveil prominent trends discovered during the analytical process, shedding light on the intricacies of poll engagement dynamics. The Discussion section delves deeper, offering a comprehensive evaluation of these trends and providing valuable insights into their implications. Finally, the Conclusion section succinctly summarizes the primary findings, encapsulating the essence of this research's contribution to understanding poll engagement in the context of City of Toronto divisions.
+
+
+
+# Data {#sec-data}
+
+Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+
+Talk more about it.
+
+And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
+
+
+
+Talk way more about it. 
+
+
+
+# Model
+
+The goal of our modelling strategy is twofold. Firstly,...
+
+Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
+
+## Model set-up
+
+Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
+
+\begin{align} 
+y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
+\mu_i &= \alpha + \beta_i + \gamma_i\\
+\alpha &\sim \mbox{Normal}(0, 2.5) \\
+\beta &\sim \mbox{Normal}(0, 2.5) \\
+\gamma &\sim \mbox{Normal}(0, 2.5) \\
+\sigma &\sim \mbox{Exponential}(1)
+\end{align}
+
+We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
+
+
+### Model justification
+
+We expect a positive relationship between the size of the wings and time spent aloft. In particular...
+
+We can use maths by including latex between dollar signs, for instance $\theta$.
+
+
+# Results
+
+Our results are summarized in @tbl-modelresults.
+
+
+
+
+
+# Discussion
+
+## First discussion point {#sec-first-point}
+
+If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+
+## Second discussion point
+
+## Third discussion point
+
+## Weaknesses and next steps
+
+Weaknesses and next steps should also be included.
+
+\newpage
+
+\appendix
+
+# Appendix {-}
+
+
+# Additional data details
+
+# Model details {#sec-model-details}
+
+## Posterior predictive check
+
+In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
+
+In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
+
+
+
+## Diagnostics
+
+@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
+
+@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
+
+
+
+
+
+\newpage
+
+
+# References
+
+
