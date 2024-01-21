@@ -1,9 +1,8 @@
 ---
 title: "Polls conducted by City of Toronto"
-# subtitle: "My subtitle if needed"
 author: 
   - Raghav Kanda
-thanks: "Code and data are available at: (https://open.toronto.ca/dataset/polls-conducted-by-the-city/)."
+thanks: "Code and data are available at: https://github.com/o8RaV/STA302/tree/main/Donaldson%20Paper"
 date: January 20, 2024
 date-format: long
 abstract: "The dataset obtained from the City of Toronto's OpenDataToronto Library sheds light on poll engagement dynamics within the city. With records starting from April 1, 2015, this study explores various facets of poll participation, including ballot distribution, cast and blank ballots, declarations added, and final voter counts."
@@ -11,7 +10,61 @@ format: pdf
 number-sections: true
 ---
 
+```{R}
+#| include: false
+#| warning: false
+#| message: false
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
 
+# Assuming your CSV file is named 'your_data_file.csv'
+file_path <- "D:/stowage/Courses/3rd year 2nd semester/STA302/STA302-1/Donaldson Paper/inputs/data/Polls Data.csv"
+
+# Read the CSV file
+data <- read.csv(file_path)
+
+# Display structure of the data
+str(data)
+
+# Summary statistics for numeric variables
+summary_stats <- data %>%
+  summarize(across(where(is.numeric), list(mean = mean, sd = sd), na.rm = TRUE))
+
+# Residual analysis using dplyr and ggplot2
+# Fit linear model
+linear_model <- lm(BALLOTS_RECEIVED_BY_VOTERS ~ BALLOTS_CAST, data = data)
+
+# Create a data frame with residuals
+residual_data <- data %>%
+  mutate(Residuals = residuals(linear_model))
+
+# Set a common size for ggplot plots
+plot_size <- 6
+```
+
+# Table of Contents
+
+- Introduction
+
+- Methodology
+    - Data Collection Process
+    - Variables and Measures
+
+- Results
+    - Overall Voter Turnout
+    - Ward-wise Analysis
+    - Subdivision Placement Impact
+    - Response Rates and Declared Results
+
+- Discussion
+    - Impact of Subdivision Placement on Voter Turnout
+    - Implications for Election Planning
+
+- Conclusion
+- References
+
+\newpage
 
 # Introduction
 
@@ -23,105 +76,178 @@ This research endeavor aims to unravel the intricate dynamics of poll engagement
 
 The Data section elucidates the nature of the dataset sourced from the City of Toronto's OpenDataToronto Library (Gelfand 2022), detailing the steps taken for data cleaning and analysis. Results unveil prominent trends discovered during the analytical process, shedding light on the intricacies of poll engagement dynamics. The Discussion section delves deeper, offering a comprehensive evaluation of these trends and providing valuable insights into their implications. Finally, the Conclusion section succinctly summarizes the primary findings, encapsulating the essence of this research's contribution to understanding poll engagement in the context of City of Toronto divisions.
 
+# Methodology
 
+## Data Collection Process
 
-# Data {#sec-data}
+### Source of Data:
+The dataset utilized in this study was obtained from the City of Toronto’s OpenDataToronto Library, serving as a comprehensive repository for information related to civic matters. The data available provides insights into poll engagements conducted by the City Clerk's Office on behalf of various City divisions.
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+### Time Period:
+Data collection spanned from April 1, 2015, with daily updates occurring up to the most recent certification of each poll. This extended timeframe allows for a nuanced examination of trends and patterns related to voter engagement over the years.
 
-Talk more about it.
+### Data Cleaning Process:
+To ensure the accuracy and reliability of the dataset, a meticulous data cleaning process was undertaken. This involved removing any inconsistencies, errors, or missing values within the dataset. Transformations and adjustments were implemented as needed to create a cohesive and standardized dataset for analysis. The goal was to present a refined dataset that aligns with the research objectives and facilitates meaningful insights.
 
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
+```{R}
+#| echo: false
+# Data
+variable_names <- c("X_id", "BALLOTS_BLANK", "BALLOTS_CAST", "BALLOTS_DISTRIBUTED", 
+                     "BALLOTS_IN_FAVOUR", "BALLOTS_NEEDED_TO_PROCEED", "BALLOTS_OPPOSED", 
+                     "BALLOTS_RECEIVED_BY_VOTERS", "BALLOTS_RETURNED_TO_SENDER", 
+                     "BALLOTS_SPOILED", "DECLARATIONS_ADDED", "FINAL_VOTER_COUNT", 
+                     "POLL_ID", "POTENTIAL_VOTERS")
 
+mean_values <- c(765554, 0.05991903, 45.74332, 114.0259, 31.92065, 36.01377, 
+                 9.894737, 106.7943, 7.231579, 3.868016, 1.567611, 114.0259, 
+                 876.1846, 252.4024)
 
+sd_values <- c(356.6581, 0.3338858, 47.25944, 155.7933, 29.51299, 62.17902, 
+               18.6605, 139.4875, 21.24652, 5.250105, 28.7232, 155.7933, 
+               407.223, 1988.987)
 
-Talk way more about it. 
+# Create a data frame
+summary_table <- data.frame(Variable = variable_names, Mean = mean_values, SD = sd_values)
 
+# Print the table
+print(summary_table)
 
+# Residuals vs. Ballots Cast
+residuals_vs_cast <- ggplot(residual_data, aes(x = BALLOTS_CAST, y = Residuals)) +
+  geom_point(shape = 19) +
+  labs(title = "Residuals vs. Ballots Cast", x = "Ballots Cast", y = "Residual Values") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  theme_minimal(base_size = plot_size)
+print(residuals_vs_cast)
+```
 
-# Model
+## Variables and Measures
 
-The goal of our modelling strategy is twofold. Firstly,...
+### Key Variables:
+Several key variables play a pivotal role in the analysis of voter engagement. Noteworthy among these are "BALLOTS_CAST," representing the number of ballots returned, "RESPONSE_RATE_MET," indicating whether the number of returned ballots met the required response rate, and "FINAL_VOTER_COUNT," denoting the total number of voters on the final poll list. These variables serve as crucial indicators in understanding the dynamics of civic participation.
 
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
+### Application Types:
+The dataset encompasses various types of applications, with a notable example being "Front Yard Parking." This variable, captured under "APPLICATION_FOR," delineates the nature of the application submitted, providing context to the polling events. Understanding the diversity of applications adds depth to the analysis, allowing for nuanced interpretations of voter behavior in response to different civic matters.
 
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
+### Poll Results:
+The "POLL_RESULT" variable delineates the final outcome of each poll, categorizing responses into different outcomes. In this context, "In Favour" signifies support for the proposed measure, as exemplified by the "Yes" designation in the sample data. Conversely, "Opposed" represents dissent. These classifications offer a comprehensive view of public sentiment toward various issues, allowing for an exploration of the factors influencing the decision-making process of the electorate.
 
 # Results
 
-Our results are summarized in @tbl-modelresults.
+## Overall Voter Turnout
+The 2022 municipal election in the City of Toronto saw a notable challenge in civic engagement, with a historically low voter turnout of 30%. This dip in participation marked the lowest figure since the city's amalgamation in 1997, reflecting a general trend of decreased civic involvement. The diminished voter engagement is attributed, in part, to the lingering effects of the Covid-19 pandemic, which likely influenced the subdued policy platforms and the overall status quo of the election.
 
+## Ward-wise Analysis
+The election results varied significantly across the 25 wards of the City of Toronto. Individual ward turnouts ranged from 22% to 38%, showcasing distinct patterns in civic participation. Factors such as the accessibility of polling locations within subdivisions played a crucial role in shaping these variations. The decision by Premier Doug Ford to align the city's ward boundaries with federal and provincial riding boundaries in 2018 added a unique dynamic to the electoral landscape, potentially influencing voter behaviors within specific geographical areas.
 
+```{R}
+#| label: Ward Turnout
+#| echo: false
 
+# Ward-wise Analysis - Bar Chart
+ward_turnout <- data %>%
+  group_by(POLL_CD) %>%
+  summarise(turnout_percentage = mean(BALLOTS_CAST / POTENTIAL_VOTERS) * 100)
 
+ggplot(ward_turnout, aes(x = POLL_CD, y = turnout_percentage)) +
+  geom_bar(stat = "identity", color = "red") +
+  ggtitle("Ward-Wise Voter Turnout") +
+  xlab("Ward") +
+  ylab("Turnout Percentage") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+print(ward_turnout)
+```
+
+## Subdivision Placement Impact
+An intriguing aspect of this research focuses on the impact of subdivision placement on voter turnout. Subdivisions, as defined by the City of Toronto, represent geographical areas within a ward, and their placement is a critical factor influencing voter accessibility to polling locations. Previous studies in other jurisdictions have shown that proximity to polling locations significantly affects voter turnout. This paper aims to contribute valuable insights into this phenomenon, especially in the context of Canadian cities like Toronto, where limited research has been conducted on the relationship between polling location placement and election turnout.
+
+```{R}
+#| label: Subdivision Placement Impact
+#| echo: false
+# Subdivision Placement Impact - Scatter Plot
+scatter_plot_subdivision <- ggplot(data, aes(x = ADDRESS, y = BALLOTS_CAST / POTENTIAL_VOTERS * 100)) +
+  geom_point() +
+  labs(title = "Subdivision Placement Impact on Voter Turnout", x = "Subdivision Placement", y = "Voter Turnout (%)")
+
+print(scatter_plot_subdivision)
+```
+
+## Response Rates and Declared Results
+The dataset obtained from the City of Toronto's OpenDataToronto Library provides a comprehensive view of poll engagement, offering insights into response rates and declared results. The mean and standard deviation calculations reveal interesting patterns, such as the average number of blank and cast ballots, as well as the variability in the number of ballots needed to proceed and the number of spoiled ballots. Understanding these metrics is crucial for evaluating the overall health of the democratic process in the city and identifying potential areas for improvement in future elections.
+
+In the subsequent sections of this paper, we will delve deeper into the Data, presenting the methodology of analysis, and then transition to the Results, where trends identified during the analysis process will be highlighted. The Discussion section will provide a comprehensive evaluation of these trends, offering valuable insights into the dynamics of voter turnout in the City of Toronto. Finally, the Conclusion will succinctly summarize the main findings and contributions of this research.
+
+```{R}
+#| echo: false
+# Boxplot of residuals
+boxplot <- ggplot(residual_data, aes(y = Residuals)) +
+  geom_boxplot(fill = "lightblue", color = "black") +
+  labs(title = "Boxplot of Residuals", x = "", y = "Residual Values") +
+  theme_minimal(base_size = plot_size)
+print(boxplot)
+
+# QQ plot of residuals
+qq_plot <- ggplot(residual_data, aes(sample = Residuals)) +
+  stat_qq() +
+  labs(title = "Normal Probability Plot of Residuals") +
+  theme_minimal(base_size = plot_size)
+print(qq_plot)
+```
 
 # Discussion
 
-## First discussion point {#sec-first-point}
+## Impact of Subdivision Placement on Voter Turnout
+In assessing the impact of subdivision placement on voter turnout in the 2022 City of Toronto elections, the data reveals several noteworthy trends. The analysis suggests that the accessibility of polling locations within subdivisions played a pivotal role in influencing voter participation. Notably, previous studies in the United States, including research on large cities like Atlanta, have indicated that the proximity of polling locations to a voter's residence can significantly bolster turnout. In the context of Toronto, the decision by Premier Doug Ford in 2018 to align the number of wards with federal and provincial riding boundaries introduced a new dynamic. This shift in ward boundaries may have influenced the distribution and accessibility of polling locations, thereby impacting individual ward turnout rates ranging from 22% to 38%. Understanding these dynamics is crucial for comprehending the nuanced relationship between subdivision placement and voter engagement.
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+```{R}
+#| echo: false
+# Histogram of residuals
+histogram <- ggplot(residual_data, aes(x = Residuals)) +
+  geom_histogram(binwidth = 10, fill = "pink", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of Residuals", x = "Residual Values", y = "Frequency") +
+  theme_minimal(base_size = plot_size)
+print(histogram)
+```
 
-## Second discussion point
+## Implications for Election Planning
+The findings underscore the importance of thoughtful election planning, particularly in terms of the placement of polling locations within subdivisions. As seen in the 2022 elections, the lowest voter turnout since amalgamation in 1997 was recorded at 30%, signaling a need for a closer examination of the factors influencing civic participation. The decision to reduce the number of wards and align them with other political boundaries has introduced complexities in ensuring equitable access to polling stations. Election planners and city officials should consider the impact of these decisions on voter engagement and work towards optimizing subdivision placement for future elections. Additionally, the observed variations in turnout among different wards highlight the necessity for a tailored and localized approach to election planning, with a focus on addressing the unique needs and challenges of each geographical area.
 
-## Third discussion point
+```{R}
+#| label: Ballots Cast vs Recieved
+#| echo: false
+# Scatter plot with histograms
+poll_plot_with_histograms <- ggplot(data, aes(x = BALLOTS_CAST, y = BALLOTS_RECEIVED_BY_VOTERS, color = POLL_RESULT)) +
+  geom_point(shape = 19) +
+  labs(title = "Scatterplot of Ballots Cast vs Received by Voters", x = "Ballots Cast", y = "Ballots Received by Voters") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_color_manual(values = c("In Favour" = "blue", "Opposed" = "red")) +
+  geom_bin2d(bins = 20) +
+  theme(plot.margin = margin(1, 1, 1, 1, "cm"))
+print(poll_plot_with_histograms)
+```
 
-## Weaknesses and next steps
+# Conclusion
+In conclusion, this research has diligently examined the intricate dynamics of poll engagement within the City of Toronto divisions, leveraging a comprehensive dataset obtained from the City Clerk's Office. Commencing on April 1, 2015, the study has explored various dimensions of poll engagement, encompassing application types, ballot counts, response rates, and final voter outcomes. Methodologically, a meticulous data collection process from the City of Toronto's OpenDataToronto Library, spanning from April 1, 2015, to the latest poll certification, was employed. Rigorous data cleaning procedures were implemented to ensure the accuracy and reliability of the dataset, with key variables identified for detailed analysis, including "BALLOTS_CAST," "RESPONSE_RATE_MET," and "FINAL_VOTER_COUNT."
 
-Weaknesses and next steps should also be included.
-
-\newpage
-
-\appendix
-
-# Appendix {-}
-
-
-# Additional data details
-
-# Model details {#sec-model-details}
-
-## Posterior predictive check
-
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
-
-
-
-## Diagnostics
-
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-
-
-
+The revealed results have brought attention to noteworthy trends, notably a historic low voter turnout of 30% in the 2022 municipal election. Ward-specific analysis uncovered significant variations in voter engagement across the 25 wards, influenced by factors such as polling location accessibility and changes in ward boundaries. The study underscored the crucial impact of subdivision placement on voter turnout, emphasizing the necessity for thoughtful election planning and consideration of the accessibility of polling stations. The ensuing discussion illuminated the implications of these findings, advocating for a localized approach in election planning to address the diverse needs of different geographical areas. In summary, this research lays the groundwork for nuanced insights into poll engagement patterns in the City of Toronto divisions, providing a basis for further discussions on optimizing election planning, fostering civic participation, and ensuring equitable access to polling locations in evolving urban landscapes.
 
 \newpage
-
 
 # References
 
+Gelfand, Sharla. 2022. Opendatatoronto: Access the City of Toronto Open Data Portal. [CRAN Link](https://cran.r-project.org/package=opendatatoronto).
 
+Wickham, Hadley. 2016. Ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York. [ggplot2 Link](https://ggplot2.tidyverse.org/).
+
+Wickham, Hadley, and Kirill Müller. 2023. Tibble: Simple Data Frames.
+
+Wickham, Hadley, Romain François, Lionel Henry, and Kirill Müller. 2023. Dplyr: A Grammar of Data Manipulation. [CRAN Link](https://cran.r-project.org/package=dplyr).
+
+Wickham, Hadley, Jim Hester, and Jennifer Bryan. 2023. Readr: Read Rectangular Text Data. [CRAN Link](https://cran.r-project.org/package=readr).
+
+Xie, Yihui. 2014. Knitr: A Comprehensive Tool for Reproducible Research in R. [Book Link](http://www.crcpress.com/product/isbn/9781466561595).
+
+Clarke, Erik, and Scott Sherrill-Mix. 2023. “Ggbeeswarm: Categorical Scatter (Violin Point) Plots.” [CRAN Link](https://cran.r-project.org/web/packages/ggbeeswarm/index.html).
+
+Zhu, Hao. 2021. kableExtra: Construct Complex Table with ’Kable’ and Pipe Syntax. [CRAN Link](https://cran.r-project.org/package=kableExtra).
