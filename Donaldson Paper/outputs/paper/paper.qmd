@@ -2,12 +2,14 @@
 title: "Polls conducted by City of Toronto"
 author: 
   - Raghav Kanda
-thanks: "Code and data are available at: https://github.com/o8RaV/STA302/tree/main/Donaldson%20Paper"
+thanks: "Code and data are available at: [https://github.com/o8RaV/STA302/tree/main/Donaldson%20Paper](https://github.com/o8RaV/STA302/tree/main/Donaldson%20Paper) [@knitr]"
+
 date: January 20, 2024
 date-format: long
 abstract: "The dataset obtained from the City of Toronto's OpenDataToronto Library sheds light on poll engagement dynamics within the city. With records starting from April 1, 2015, this study explores various facets of poll participation, including ballot distribution, cast and blank ballots, declarations added, and final voter counts."
 format: pdf
 number-sections: true
+bibliography: references.bib
 ---
 
 ```{R}
@@ -31,7 +33,7 @@ str(data)
 summary_stats <- data %>%
   summarize(across(where(is.numeric), list(mean = mean, sd = sd), na.rm = TRUE))
 
-# Residual analysis using dplyr and ggplot2
+# Residual analysis using dplyr and ggplot2 
 # Fit linear model
 linear_model <- lm(BALLOTS_RECEIVED_BY_VOTERS ~ BALLOTS_CAST, data = data)
 
@@ -68,13 +70,14 @@ plot_size <- 6
 
 # Introduction
 
-In accordance with the mandate of the City Clerk's Office to oversee polls on behalf of City divisions, this study engages with a comprehensive dataset focused on poll engagement. The dataset, initiated on April 1, 2015, provides a daily account of updates following the conclusion and certification of each poll. The primary objective is to discern the opinions of residents and businesses on various subjects governed by a City by-law (Chp190).
+In accordance with the mandate of the City Clerk's Office to oversee polls on behalf of City divisions, this study engages with a comprehensive dataset focused on poll engagement. The dataset, initiated on April 1, 2015, provides a daily account of updates following the conclusion and certification of each poll. The primary objective is to discern the opinions of residents and businesses on various subjects governed by a City by-law (Chp190).[@tibble]
+
 
 Key facets of the dataset include information such as the street address of the application, the type of application, the count of blank and cast ballots, the distribution of ballots, and the number of ballots marked "in favour" or "opposed." Several other relevant metrics contribute to a holistic understanding of poll engagement dynamics. The temporal dimension is also captured, featuring data on the opening and closing dates of each poll, the moratorium date, and the final voter count. Moreover, the dataset accounts for additional factors influencing poll outcomes, such as declarations added after the poll opening, the number of spoiled ballots, and ballots returned to the sender.
 
-This research endeavor aims to unravel the intricate dynamics of poll engagement and its multifaceted components within the City of Toronto divisions. By systematically analyzing the rich and varied dataset, this study seeks to contribute nuanced insights into the patterns and trends associated with poll engagement. The subsequent sections—Data, Results, Discussion, and Conclusion—serve as a structured framework for the meticulous examination and interpretation of findings derived from the dataset.
+This research endeavor aims to unravel the intricate dynamics of poll engagement and its multifaceted components within the City of Toronto divisions. By systematically analyzing the rich and varied dataset, this study seeks to contribute nuanced insights into the patterns and trends associated with poll engagement. The subsequent sections—Data, Results, Discussion, and Conclusion—serve as a structured framework for the meticulous examination and interpretation of findings derived from the dataset [@ggbeeswarm] [@kableExtra].
 
-The Data section elucidates the nature of the dataset sourced from the City of Toronto's OpenDataToronto Library (Gelfand 2022), detailing the steps taken for data cleaning and analysis. Results unveil prominent trends discovered during the analytical process, shedding light on the intricacies of poll engagement dynamics. The Discussion section delves deeper, offering a comprehensive evaluation of these trends and providing valuable insights into their implications. Finally, the Conclusion section succinctly summarizes the primary findings, encapsulating the essence of this research's contribution to understanding poll engagement in the context of City of Toronto divisions.
+The Data section elucidates the nature of the dataset sourced from the City of Toronto's OpenDataToronto Library  [@opendatatoronto] (Gelfand 2022), detailing the steps taken for data cleaning and analysis. Results unveil prominent trends discovered during the analytical process, shedding light on the intricacies of poll engagement dynamics. The Discussion section delves deeper, offering a comprehensive evaluation of these trends and providing valuable insights into their implications. Finally, the Conclusion section succinctly summarizes the primary findings, encapsulating the essence of this research's contribution to understanding poll engagement in the context of City of Toronto divisions.
 
 # Methodology
 
@@ -87,7 +90,8 @@ The dataset utilized in this study was obtained from the City of Toronto’s Ope
 Data collection spanned from April 1, 2015, with daily updates occurring up to the most recent certification of each poll. This extended timeframe allows for a nuanced examination of trends and patterns related to voter engagement over the years.
 
 ### Data Cleaning Process:
-To ensure the accuracy and reliability of the dataset, a meticulous data cleaning process was undertaken. This involved removing any inconsistencies, errors, or missing values within the dataset. Transformations and adjustments were implemented as needed to create a cohesive and standardized dataset for analysis. The goal was to present a refined dataset that aligns with the research objectives and facilitates meaningful insights.
+To ensure the accuracy and reliability of the dataset, a meticulous data cleaning process was undertaken [@readr]. This involved removing any inconsistencies, errors, or missing values within the dataset. Transformations and adjustments were implemented as needed to create a cohesive and standardized dataset for analysis. The goal was to present a refined dataset that aligns with the research objectives and facilitates meaningful insights.[@ggplot2] [@dplyr]
+
 
 ```{R}
 #| echo: false
@@ -111,7 +115,11 @@ summary_table <- data.frame(Variable = variable_names, Mean = mean_values, SD = 
 
 # Print the table
 print(summary_table)
+```
 
+```{R}
+#| echo: false
+#| fig-cap: Residuals vs Ballots Cast
 # Residuals vs. Ballots Cast
 residuals_vs_cast <- ggplot(residual_data, aes(x = BALLOTS_CAST, y = Residuals)) +
   geom_point(shape = 19) +
@@ -144,7 +152,7 @@ The election results varied significantly across the 25 wards of the City of Tor
 #| label: Ward Turnout
 #| echo: false
 
-# Ward-wise Analysis - Bar Chart
+#| fig-cap: Ward-wise Analysis - Bar Chart
 ward_turnout <- data %>%
   group_by(POLL_CD) %>%
   summarise(turnout_percentage = mean(BALLOTS_CAST / POTENTIAL_VOTERS) * 100)
@@ -165,7 +173,7 @@ An intriguing aspect of this research focuses on the impact of subdivision place
 ```{R}
 #| label: Subdivision Placement Impact
 #| echo: false
-# Subdivision Placement Impact - Scatter Plot
+#| fig-cap: Subdivision Placement Impact - Scatter Plot
 scatter_plot_subdivision <- ggplot(data, aes(x = ADDRESS, y = BALLOTS_CAST / POTENTIAL_VOTERS * 100)) +
   geom_point() +
   labs(title = "Subdivision Placement Impact on Voter Turnout", x = "Subdivision Placement", y = "Voter Turnout (%)")
@@ -180,14 +188,14 @@ In the subsequent sections of this paper, we will delve deeper into the Data, pr
 
 ```{R}
 #| echo: false
-# Boxplot of residuals
+#| fig-cap: Boxplot of residuals
 boxplot <- ggplot(residual_data, aes(y = Residuals)) +
   geom_boxplot(fill = "lightblue", color = "black") +
   labs(title = "Boxplot of Residuals", x = "", y = "Residual Values") +
   theme_minimal(base_size = plot_size)
 print(boxplot)
 
-# QQ plot of residuals
+#| fig-cap: QQ plot of residuals
 qq_plot <- ggplot(residual_data, aes(sample = Residuals)) +
   stat_qq() +
   labs(title = "Normal Probability Plot of Residuals") +
@@ -202,7 +210,7 @@ In assessing the impact of subdivision placement on voter turnout in the 2022 Ci
 
 ```{R}
 #| echo: false
-# Histogram of residuals
+#| fig-cap: Histogram of residuals
 histogram <- ggplot(residual_data, aes(x = Residuals)) +
   geom_histogram(binwidth = 10, fill = "pink", color = "black", alpha = 0.7) +
   labs(title = "Histogram of Residuals", x = "Residual Values", y = "Frequency") +
@@ -216,7 +224,7 @@ The findings underscore the importance of thoughtful election planning, particul
 ```{R}
 #| label: Ballots Cast vs Recieved
 #| echo: false
-# Scatter plot with histograms
+#| fig-cap: Scatter plot with histograms
 poll_plot_with_histograms <- ggplot(data, aes(x = BALLOTS_CAST, y = BALLOTS_RECEIVED_BY_VOTERS, color = POLL_RESULT)) +
   geom_point(shape = 19) +
   labs(title = "Scatterplot of Ballots Cast vs Received by Voters", x = "Ballots Cast", y = "Ballots Received by Voters") +
@@ -235,19 +243,6 @@ The revealed results have brought attention to noteworthy trends, notably a hist
 \newpage
 
 # References
+```{bibliography}
+```
 
-Gelfand, Sharla. 2022. Opendatatoronto: Access the City of Toronto Open Data Portal. [CRAN Link](https://cran.r-project.org/package=opendatatoronto).
-
-Wickham, Hadley. 2016. Ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York. [ggplot2 Link](https://ggplot2.tidyverse.org/).
-
-Wickham, Hadley, and Kirill Müller. 2023. Tibble: Simple Data Frames.
-
-Wickham, Hadley, Romain François, Lionel Henry, and Kirill Müller. 2023. Dplyr: A Grammar of Data Manipulation. [CRAN Link](https://cran.r-project.org/package=dplyr).
-
-Wickham, Hadley, Jim Hester, and Jennifer Bryan. 2023. Readr: Read Rectangular Text Data. [CRAN Link](https://cran.r-project.org/package=readr).
-
-Xie, Yihui. 2014. Knitr: A Comprehensive Tool for Reproducible Research in R. [Book Link](http://www.crcpress.com/product/isbn/9781466561595).
-
-Clarke, Erik, and Scott Sherrill-Mix. 2023. “Ggbeeswarm: Categorical Scatter (Violin Point) Plots.” [CRAN Link](https://cran.r-project.org/web/packages/ggbeeswarm/index.html).
-
-Zhu, Hao. 2021. kableExtra: Construct Complex Table with ’Kable’ and Pipe Syntax. [CRAN Link](https://cran.r-project.org/package=kableExtra).
