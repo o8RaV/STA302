@@ -3,7 +3,7 @@ library(dplyr)
 library(ggplot2)
 
 # Assuming your CSV file is named 'your_data_file.csv'
-file_path <- "D:/stowage/Courses/3rd year 2nd semester/STA302/STA302-1/Donaldson Paper/inputs/data/Polls Data.csv"
+file_path <- "Donaldson Paper/inputs/data/Polls Data.csv"
 
 # Read the CSV file
 data <- read.csv(file_path)
@@ -94,9 +94,6 @@ residuals_vs_cast <- ggplot(residual_data, aes(x = BALLOTS_CAST, y = Residuals))
   labs(title = "Residuals vs. Ballots Cast", x = "Ballots Cast", y = "Residual Values") +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red")
 print(residuals_vs_cast)
-
-
-
 
 # Set up a 2 by 2 layout
 par(mfrow = c(2, 2))

@@ -21,7 +21,7 @@ library(dplyr)
 library(ggplot2)
 
 # Assuming your CSV file is named 'your_data_file.csv'
-file_path <- "D:/stowage/Courses/3rd year 2nd semester/STA302/STA302-1/Donaldson Paper/inputs/data/Polls Data.csv"
+file_path <- "D:/stowage/Courses/3rd year 2nd semester/STA302/STA302-Assignments/Donaldson Paper/inputs/data/Polls Data.csv"
 
 # Read the CSV file
 data <- read.csv(file_path)
@@ -90,7 +90,7 @@ The dataset utilized in this study was obtained from the City of Toronto’s Ope
 Data collection spanned from April 1, 2015, with daily updates occurring up to the most recent certification of each poll. This extended timeframe allows for a nuanced examination of trends and patterns related to voter engagement over the years.
 
 ### Data Cleaning Process:
-To ensure the accuracy and reliability of the dataset, a meticulous data cleaning process was undertaken [@readr]. This involved removing any inconsistencies, errors, or missing values within the dataset. Transformations and adjustments were implemented as needed to create a cohesive and standardized dataset for analysis. The goal was to present a refined dataset that aligns with the research objectives and facilitates meaningful insights.[@ggplot2] [@dplyr]
+To ensure the accuracy and reliability of the dataset, a meticulous data cleaning process was undertaken [@readr]. This involved removing any inconsistencies, errors, or missing values within the dataset. Transformations and adjustments were implemented as needed to create a cohesive and standardized dataset for analysis. The goal was to present a refined dataset that aligns with the research objectives and facilitates meaningful insights (see Figure 1) (see Table 1).[@ggplot2] [@dplyr]
 
 
 ```{R}
@@ -168,7 +168,7 @@ print(ward_turnout)
 ```
 
 ## Subdivision Placement Impact
-An intriguing aspect of this research focuses on the impact of subdivision placement on voter turnout. Subdivisions, as defined by the City of Toronto, represent geographical areas within a ward, and their placement is a critical factor influencing voter accessibility to polling locations. Previous studies in other jurisdictions have shown that proximity to polling locations significantly affects voter turnout. This paper aims to contribute valuable insights into this phenomenon, especially in the context of Canadian cities like Toronto, where limited research has been conducted on the relationship between polling location placement and election turnout.
+An intriguing aspect of this research focuses on the impact of subdivision placement on voter turnout. Subdivisions, as defined by the City of Toronto, represent geographical areas within a ward, and their placement is a critical factor influencing voter accessibility to polling locations. Previous studies in other jurisdictions have shown that proximity to polling locations significantly affects voter turnout. This paper aims to contribute valuable insights into this phenomenon, especially in the context of Canadian cities like Toronto, where limited research has been conducted on the relationship between polling location placement and election turnout (see Figure 2).
 
 ```{R}
 #| label: Subdivision Placement Impact
@@ -184,7 +184,7 @@ print(scatter_plot_subdivision)
 ## Response Rates and Declared Results
 The dataset obtained from the City of Toronto's OpenDataToronto Library provides a comprehensive view of poll engagement, offering insights into response rates and declared results. The mean and standard deviation calculations reveal interesting patterns, such as the average number of blank and cast ballots, as well as the variability in the number of ballots needed to proceed and the number of spoiled ballots. Understanding these metrics is crucial for evaluating the overall health of the democratic process in the city and identifying potential areas for improvement in future elections.
 
-In the subsequent sections of this paper, we will delve deeper into the Data, presenting the methodology of analysis, and then transition to the Results, where trends identified during the analysis process will be highlighted. The Discussion section will provide a comprehensive evaluation of these trends, offering valuable insights into the dynamics of voter turnout in the City of Toronto. Finally, the Conclusion will succinctly summarize the main findings and contributions of this research.
+In the subsequent sections of this paper, we will delve deeper into the data, presenting the methodology of analysis, and then transition to the results, where trends identified during the analysis process will be highlighted. The discussion section will provide a comprehensive evaluation of these trends, offering valuable insights into the dynamics of voter turnout in the City of Toronto. Finally, the conclusion will succinctly summarize the main findings and contributions of this research (see Figures 3 and 4).
 
 ```{R}
 #| echo: false
@@ -206,7 +206,7 @@ print(qq_plot)
 # Discussion
 
 ## Impact of Subdivision Placement on Voter Turnout
-In assessing the impact of subdivision placement on voter turnout in the 2022 City of Toronto elections, the data reveals several noteworthy trends. The analysis suggests that the accessibility of polling locations within subdivisions played a pivotal role in influencing voter participation. Notably, previous studies in the United States, including research on large cities like Atlanta, have indicated that the proximity of polling locations to a voter's residence can significantly bolster turnout. In the context of Toronto, the decision by Premier Doug Ford in 2018 to align the number of wards with federal and provincial riding boundaries introduced a new dynamic. This shift in ward boundaries may have influenced the distribution and accessibility of polling locations, thereby impacting individual ward turnout rates ranging from 22% to 38%. Understanding these dynamics is crucial for comprehending the nuanced relationship between subdivision placement and voter engagement.
+In assessing the impact of subdivision placement on voter turnout in the 2022 City of Toronto elections, the data reveals several noteworthy trends. The analysis suggests that the accessibility of polling locations within subdivisions played a pivotal role in influencing voter participation. Notably, previous studies in the United States, including research on large cities like Atlanta, have indicated that the proximity of polling locations to a voter's residence can significantly bolster turnout. In the context of Toronto, the decision by Premier Doug Ford in 2018 to align the number of wards with federal and provincial riding boundaries introduced a new dynamic. This shift in ward boundaries may have influenced the distribution and accessibility of polling locations, thereby impacting individual ward turnout rates ranging from 22% to 38%. Understanding these dynamics is crucial for comprehending the nuanced relationship between subdivision placement and voter engagement (see Figure 5).
 
 ```{R}
 #| echo: false
@@ -219,7 +219,8 @@ print(histogram)
 ```
 
 ## Implications for Election Planning
-The findings underscore the importance of thoughtful election planning, particularly in terms of the placement of polling locations within subdivisions. As seen in the 2022 elections, the lowest voter turnout since amalgamation in 1997 was recorded at 30%, signaling a need for a closer examination of the factors influencing civic participation. The decision to reduce the number of wards and align them with other political boundaries has introduced complexities in ensuring equitable access to polling stations. Election planners and city officials should consider the impact of these decisions on voter engagement and work towards optimizing subdivision placement for future elections. Additionally, the observed variations in turnout among different wards highlight the necessity for a tailored and localized approach to election planning, with a focus on addressing the unique needs and challenges of each geographical area.
+
+The results highlight the significance of careful election preparation, especially with regard to where voting places should be located inside subdivisions. As demonstrated by the 2022 elections, which had the lowest voter turnout (30%) since merger in 1997, there is a need to investigate the variables impacting civic engagement more thoroughly. The choice to shrink the ward size and match it with other political boundaries has made it more difficult to guarantee that all voters have equal access to polling places. Election planners and city officials should consider the impact of these decisions on voter engagement and work towards optimizing subdivision placement for future elections. Additionally, the observed variations in turnout among different wards highlight the necessity for a tailored and localized approach to election planning, with a focus on addressing the unique needs and challenges of each geographical area (see Figure 6).
 
 ```{R}
 #| label: Ballots Cast vs Recieved
