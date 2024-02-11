@@ -1,0 +1,12 @@
+devtools::create("favcolordata")
+
+simulate_fav_color <- function(n) {
+  set.seed(123)
+  colors <- c("Red", "Blue", "Green", "Yellow", "Orange")
+  data <- data.frame(ID = 1:n, Favorite_Color = sample(colors, n, replace = TRUE))
+  return(data)
+}
+
+devtools::document("favcolordata")
+devtools::build("favcolordata")
+devtools::check("favcolordata")
